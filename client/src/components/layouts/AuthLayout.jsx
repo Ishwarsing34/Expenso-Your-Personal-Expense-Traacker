@@ -1,38 +1,38 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import CARD_2 from "../../assets/images/card2.png";
+import { FaWallet, FaChartLine, FaCoins } from "react-icons/fa";
 
-const spin = {
-  animate: {
-    rotate: 360,
-    transition: {
-      repeat: Infinity,
-      duration: 30,
-      ease: "linear",
-    },
-  },
-};
+/* ================= DATA ================= */
 
-const float = {
-  animate: {
-    y: [0, -12, 0],
-    transition: {
-      repeat: Infinity,
-      duration: 6,
-      ease: "easeInOut",
-    },
-  },
-};
+const chartData = [
+  { month: "Jan", value: 12000, height: 80, icon: FaWallet },
+  { month: "Feb", value: 18000, height: 120, icon: FaChartLine },
+  { month: "Mar", value: 24000, height: 160, icon: FaCoins },
+  { month: "Apr", value: 22000, height: 150, icon: FaWallet },
+  { month: "May", value: 14000, height: 90, icon: FaChartLine },
+  { month: "Jun", value: 28000, height: 180, icon: FaCoins },
+  { month: "Jul", value: 32000, height: 200, icon: FaWallet },
+];
+
+/* ================= LAYOUT ================= */
 
 const AuthLayout = ({ children }) => {
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-[#fafafa]">
-      {/* LEFT */}
+      {/* ================= LEFT ================= */}
       <div className="relative z-10 flex w-full flex-col justify-center px-20 lg:w-[55%]">
-        <h2 className="mb-16 text-xl font-semibold tracking-wide text-gray-900">
-          Expense Tracker
-        </h2>
+        {/* Logo */}
+        <div className="mb-20 flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-purple-600 text-white font-bold shadow-lg">
+            ₹
+          </div>
+          <span className="text-xl font-bold tracking-wide text-gray-900">
+            Expense Tracker
+          </span>
+        </div>
 
+        {/* Auth Content */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -42,68 +42,97 @@ const AuthLayout = ({ children }) => {
         </motion.div>
       </div>
 
-      {/* RIGHT */}
-      <div className="relative hidden h-full w-[45%] lg:block">
-        {/* Orbit Ring */}
-        <motion.div
-          variants={spin}
-          animate="animate"
-          className="absolute top-1/2 left-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-300/40"
-        />
-        <motion.div
-          variants={spin}
-          animate="animate"
-          className="absolute top-1/2 left-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-200/30"
-        />
+      {/* ================= RIGHT ================= */}
+      <div className="relative hidden h-full w-[45%] lg:flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-white overflow-hidden">
+        {/* Soft background glow */}
+        <div className="absolute h-[700px] w-[700px] rounded-full bg-violet-200/30 blur-3xl" />
 
-        {/* Income Token */}
-        <motion.div
-          variants={float}
-          animate="animate"
-          className="absolute top-24 right-24 rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-700 shadow-sm"
-        >
-          + Income
-        </motion.div>
-
-        {/* Expense Token */}
-        <motion.div
-          variants={float}
-          animate="animate"
-          transition={{ delay: 1 }}
-          className="absolute bottom-28 left-24 rounded-full bg-rose-100 px-4 py-2 text-sm font-medium text-rose-700 shadow-sm"
-        >
-          − Expense
-        </motion.div>
-
-        {/* Stats Card */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="absolute top-16 left-1/2 w-[320px] -translate-x-1/2 rounded-2xl bg-white p-5 shadow-xl"
-        >
-          <p className="text-sm text-gray-500">
-            Track your balance
-          </p>
-          <p className="mt-1 text-3xl font-semibold text-gray-900">
-            $430,000
-          </p>
-          <div className="mt-2 h-1 w-full rounded-full bg-gradient-to-r from-emerald-400 via-violet-400 to-rose-400" />
-        </motion.div>
-
-        {/* Chart Widget */}
+        {/* ================= CHART CARD ================= */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="absolute bottom-14 left-1/2 w-[85%] -translate-x-1/2 rounded-3xl bg-white p-4 shadow-2xl"
+          transition={{ duration: 0.8 }}
+          className="relative z-10 w-[88%] rounded-3xl bg-white p-8 shadow-2xl"
         >
-          <img
-            src={CARD_2}
-            alt="Transaction Analytics"
-            className="w-full rounded-xl"
-          />
+          {/* Header */}
+          <div className="mb-8">
+            <p className="text-lg font-semibold text-gray-800">
+              Monthly Expenses
+            </p>
+            <p className="text-sm text-gray-400">
+              Expense distribution overview
+            </p>
+          </div>
+
+          {/* ================= GRAPH ================= */}
+          <div className="flex h-[260px] items-end gap-6">
+            {chartData.map((item, index) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.month}
+                  className="relative flex flex-1 flex-col items-center"
+                >
+                  {/* Floating icon */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: [0, -6, 0] }}
+                    transition={{
+                      duration: 2.5,
+                      delay: index * 0.15,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute -top-10 flex h-9 w-9 items-center justify-center rounded-full bg-violet-100 text-violet-600 shadow"
+                  >
+                    <Icon size={16} />
+                  </motion.div>
+
+                  {/* Value badge */}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: index * 0.15 }}
+                    className="absolute -top-2 rounded-md bg-gray-900 px-2 py-1 text-[10px] text-white shadow"
+                  >
+                    ₹{item.value.toLocaleString()}
+                  </motion.div>
+
+                  {/* Bar */}
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{
+                      height: [item.height, item.height + 8, item.height],
+                    }}
+                    transition={{
+                      duration: 3,
+                      delay: index * 0.15,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="w-full rounded-t-2xl bg-gradient-to-t from-violet-700 to-violet-400"
+                  />
+
+                  {/* Month */}
+                  <span className="mt-3 text-xs font-medium text-gray-400">
+                    {item.month}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </motion.div>
+
+        {/* Caption */}
+        <div className="absolute bottom-20 text-center">
+          <p className="text-sm font-medium text-gray-700">
+            Visualize • Track • Control
+          </p>
+          <p className="mt-1 text-xs text-gray-400">
+            Expense insights at a glance
+          </p>
+        </div>
       </div>
     </div>
   );
