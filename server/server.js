@@ -46,10 +46,10 @@ app.get("/", (req, res) => {
   res.send( "Server is running 🚀" );
 });
 
-app.use("/api/auth", authRouter);
-app.use("/api/income", incomeRouter )
-app.use("/api/dashboard",dashRouter)
-app.use("/api/expense", expenseRouter)
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/income", incomeRouter )
+app.use("/api/v1/dashboard",dashRouter)
+app.use("/api/v1/expense", expenseRouter)
 
 
 
