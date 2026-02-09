@@ -1,7 +1,7 @@
 import IncomeModel from "../models/Income.js";
 import ExpenseModel from "../models/Expense.js";
-import IncomeModel from "../models/Income.js";
-import { isValidObjectId, Types } from "mongoose";
+import mongoose from "mongoose";
+
 
 
 
@@ -37,7 +37,7 @@ export const getDashboardData = async (req, res) => {
     );
 
     // ================= LAST 30 DAYS EXPENSE =================
-    const last30DaysExpenseTransactions = await Expense.find({
+    const last30DaysExpenseTransactions = await ExpenseModel.find({
       userId,
       date: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
     }).sort({ date: -1 });
@@ -49,7 +49,7 @@ export const getDashboardData = async (req, res) => {
 
     // ================= RECENT TRANSACTIONS =================
     const recentIncome = (
-      await Income.find({ userId })
+      await IncomeModel.find({ userId })
         .sort({ date: -1 })
         .limit(5)
     ).map((txn) => ({
@@ -58,7 +58,7 @@ export const getDashboardData = async (req, res) => {
     }));
 
     const recentExpense = (
-      await Expense.find({ userId })
+      await ExpenseModel.find({ userId })
         .sort({ date: -1 })
         .limit(5)
     ).map((txn) => ({
@@ -94,5 +94,7 @@ export const getDashboardData = async (req, res) => {
     });
   }
 };
+
+
 
 
