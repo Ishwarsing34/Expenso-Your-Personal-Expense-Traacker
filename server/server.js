@@ -13,7 +13,11 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./configs/db.js";
+import path from 'path';
 import authRouter from "./routes/authRoutes.js"
+import incomeRouter from './routes/incomeRoutes.js';
+import expenseRouter from './routes/ExpenseRoutes.js';
+import dashRouter from './routes/dashboardRoutes.js';
 
 
 dotenv.config();
@@ -43,6 +47,15 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/income", incomeRouter )
+app.use("/api/dashboard",dashRouter)
+app.use("/api/expense", expenseRouter)
+
+
+
+app.use("/uploads", express.static("uploads"));
+
+
 
 
 const PORT = process.env.PORT || 5000;

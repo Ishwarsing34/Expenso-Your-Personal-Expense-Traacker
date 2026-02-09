@@ -1,6 +1,6 @@
 import { generateToken } from "../utils/jwtTokenGenerator.js";
 import userModel from "../models/User.js";
-import { hashPassword } from "../utils/hashedPassword.js";
+import { hashPassword ,comparePassword} from "../utils/hashedPassword.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -100,7 +100,9 @@ export const loginUser = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
+
       success: false,
       message: "Server error",
     });
