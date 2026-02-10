@@ -1,20 +1,33 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import Input from "../../components/Inputs/input";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { validateEmail } from "../../utils/helper";
-import { Link } from 'react-router-dom';   
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from "../../utils/axiosinstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
+
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null)
+  
+
+   const {updateUser} = useContext(UserContext)
+
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if(!validateEmail(email)){
+    if (!validateEmail(email)) {
       setError("Please add a valid Email Address")
       return;
     }
@@ -27,8 +40,30 @@ const Login = () => {
 
     //api call 
 
+    try {
 
-    
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password
+      })
+
+      const { token , user } = response.data;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user)
+        navigate("/dashboard");
+
+      }
+    } catch (error) {
+
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message)
+      } else {
+        setError("Something went wrong. Please try again")
+      }
+    }
+
   };
 
   return (
@@ -62,9 +97,9 @@ const Login = () => {
             value={password}
             onChange={setPassword}
           />
-       
 
-           {error && (
+
+          {error && (
             <p className="mt-2 text-xs text-red-500">
               {error}
             </p>

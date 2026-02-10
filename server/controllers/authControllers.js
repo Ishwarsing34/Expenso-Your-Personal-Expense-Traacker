@@ -4,10 +4,10 @@ import { hashPassword ,comparePassword} from "../utils/hashedPassword.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, fullName, password,profileImageUrl  } = req.body;
 
     // 1. Validate input
-    if (!email || !name || !password) {
+    if (!email || !fullName || !password) {
       return res.status(400).json({
         success: false,
         message: "Please add all the details",
@@ -29,9 +29,10 @@ export const registerUser = async (req, res) => {
 
     // 4. Create user
     const user = await userModel.create({
-      name,
+      name : fullName,
       email,
       password: hashedPassword,
+      profileImageUrl 
     });
 
     // 5. Generate JWT token
@@ -44,8 +45,9 @@ export const registerUser = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        name: user.fullName,
         email: user.email,
+        profileImageUrl
       },
     });
   } catch (error) {
