@@ -14,11 +14,12 @@ import ExpenseTransactions from "../../components/Dashboard/ExpenseTransactions"
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses";
 import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart";
 import RecentIncome from "../../components/Dashboard/RecentIncome";
+import useUserAuth from "../../hooks/useUserAuth";
 
 
 
 const Home = () => {
-  // useUserAuth();
+  useUserAuth();
 
   const navigate = useNavigate();
 

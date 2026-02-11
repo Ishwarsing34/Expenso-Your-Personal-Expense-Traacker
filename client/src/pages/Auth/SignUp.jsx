@@ -86,70 +86,75 @@ const SignUp = () => {
 
   };
 
-  return (
-    <AuthLayout>
-      <div className="w-[420px]">
-        <h3 className="text-2xl font-semibold text-gray-900">
-          Create an Account
-        </h3>
-        <p className="mt-1 text-sm text-gray-500">
-          Join us today by entering your details below
-        </p>
+ return (
+  <AuthLayout>
+    <div className="w-full max-w-md px-4 sm:px-6 md:px-8 mx-auto">
+      <h3 className="text-2xl sm:text-3xl font-semibold text-gray-900">
+        Create an Account
+      </h3>
 
-        <form onSubmit={handleSignUp} className="mt-8 space-y-6">
-          {/* Profile Photo */}
+      <p className="mt-2 text-sm sm:text-base text-gray-500">
+        Join us today by entering your details below
+      </p>
+
+      <form onSubmit={handleSignUp} className="mt-6 sm:mt-8 space-y-5 sm:space-y-6">
+        
+        {/* Profile Photo */}
+        <div className="flex justify-center">
           <ProfilePhotoSelector
             image={profilePic}
             setImage={setProfilePic}
           />
+        </div>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <Input
-              label="Full Name"
-              type="text"
-              value={fullName}
-              onChange={setFullName}
-            />
-
-            <Input
-              label="Email Address"
-              type="email"
-              value={email}
-              onChange={setEmail}
-            />
-          </div>
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={setPassword}
+            label="Full Name"
+            type="text"
+            value={fullName}
+            onChange={setFullName}
           />
 
-          {error && (
-            <p className="text-xs text-red-500">{error}</p>
-          )}
+          <Input
+            label="Email Address"
+            type="email"
+            value={email}
+            onChange={setEmail}
+          />
+        </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-violet-600 py-3 text-sm font-medium text-white transition hover:bg-violet-700"
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={setPassword}
+        />
+
+        {error && (
+          <p className="text-xs sm:text-sm text-red-500">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          className="w-full rounded-xl bg-violet-600 py-3 text-sm sm:text-base font-medium text-white transition hover:bg-violet-700"
+        >
+          Create Account
+        </button>
+
+        <p className="text-center text-sm text-gray-500">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-violet-600 underline"
           >
-            Create Account
-          </button>
+            Login
+          </Link>
+        </p>
+      </form>
+    </div>
+  </AuthLayout>
+);
 
-          <p className="text-center text-sm text-gray-500">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-violet-600 underline"
-            >
-              Login
-            </Link>
-          </p>
-        </form>
-      </div>
-    </AuthLayout>
-  );
 };
 
 export default SignUp;

@@ -66,68 +66,66 @@ const Login = () => {
 
   };
 
-  return (
-    <AuthLayout>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-[360px]"
-      >
-        <h3 className="mb-2 text-2xl font-semibold text-gray-900">
-          Welcome Back
-        </h3>
-        <p className="mb-10 text-sm text-gray-500">
-          Please enter your details to log in
-        </p>
+return (
+  <AuthLayout>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="w-full max-w-md mx-auto px-4 sm:px-6 md:px-8"
+    >
+      <h3 className="mb-2 text-2xl sm:text-3xl font-semibold text-gray-900">
+        Welcome Back
+      </h3>
 
-        <form onSubmit={handleLogin}>
-          <Input
-            label="Email Address"
-            type="email"
+      <p className="mb-8 sm:mb-10 text-sm sm:text-base text-gray-500">
+        Please enter your details to log in
+      </p>
 
-            value={email}
-            onChange={setEmail}
-          />
+      <form onSubmit={handleLogin} className="space-y-5">
+        <Input
+          label="Email Address"
+          type="email"
+          value={email}
+          onChange={setEmail}
+        />
 
-          <Input
-            label="Password"
-            type="password"
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={setPassword}
+        />
 
-            value={password}
-            onChange={setPassword}
-          />
+        {error && (
+          <p className="text-xs sm:text-sm text-red-500">
+            {error}
+          </p>
+        )}
 
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          type="submit"
+          className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 py-3 text-sm sm:text-base font-medium text-white shadow-lg transition"
+        >
+          Sign In
+        </motion.button>
+      </form>
 
-          {error && (
-            <p className="mt-2 text-xs text-red-500">
-              {error}
-            </p>
-          )}
+      <p className="mt-6 text-center text-sm text-gray-500">
+        Don’t have an account?{" "}
+        <Link
+          to="/signup"
+          className="font-medium text-violet-600 underline hover:text-violet-700"
+        >
+          Signup
+        </Link>
+      </p>
+    </motion.div>
+  </AuthLayout>
+);
 
-
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 py-3 text-white shadow-lg"
-          >
-            Sign In
-          </motion.button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Don’t have an account?{" "}
-          <Link
-            to="/signup"
-            className="font-medium text-violet-600 underline hover:text-violet-700"
-          >
-            Signup
-          </Link>
-        </p>
-      </motion.div>
-    </AuthLayout>
-  );
 };
 
 export default Login;
