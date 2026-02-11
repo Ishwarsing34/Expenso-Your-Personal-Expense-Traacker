@@ -18,7 +18,7 @@ authRouter.post('/register', registerUser)
 authRouter.post('/login', loginUser)
 
 
-authRouter.post('/getuser', protect, getUserInfo)
+authRouter.get('/getuser', protect, getUserInfo)
 
 authRouter.post(
 

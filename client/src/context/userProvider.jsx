@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
 
   const clearUser = () => {
     setUser(null);
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token");
   };
 
   return (
