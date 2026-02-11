@@ -1,4 +1,4 @@
-// import moment from "moment"
+import moment from "moment"
 
 
 
@@ -92,3 +92,25 @@ export const prepareIncomeBarChartData = (data = []) => {
       amount: item.amount,
     }));
 };
+
+
+
+
+
+export const prepareExpenseLineChartData = (data = []) => {
+  if (!Array.isArray(data)) return [];
+  const sortedData = [...data].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
+
+  const chartData = sortedData.map((item) => ({
+    month: moment(item.date).format("DD MMM"),
+    amount: Number(item.amount),
+    category: item.category,
+  }));
+
+  return chartData;
+};
+
+
+

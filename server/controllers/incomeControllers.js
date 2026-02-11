@@ -106,14 +106,66 @@ export const deleteIncome = async (req, res) => {
 
 
 
+// export const downloadIncomeExcel = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+
+//     // 1. Fetch income data
+//     const incomes = await IncomeModel.find({ userId }).sort({
+//       date: -1,
+//     });
+
+//     if (!incomes.length) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "No income records found",
+//       });
+//     }
+
+//     // 2. Format data
+//     const excelData = incomes.map((income) => ({
+//       Source: income.source,
+//       Amount: income.amount,
+//       Date: income.date.toISOString().split("T")[0],
+//       CreatedAt: income.createdAt.toISOString().split("T")[0],
+//     }));
+
+//     // 3. Create workbook
+//     const workbook = XLSX.utils.book_new();
+//     const worksheet = XLSX.utils.json_to_sheet(excelData);
+//     XLSX.utils.book_append_sheet(workbook, worksheet, "Income Records");
+
+//     // 4. File path (unique per user)
+//     const fileName = `income-${userId}-${Date.now()}.xlsx`;
+//     const filePath = path.join("exports", fileName);
+
+//     // 5. Save file to backend
+//     XLSX.writeFile(workbook, filePath);
+
+//     // 6. Respond
+//     return res.status(200).json({
+//       success: true,
+//       message: "Excel file generated successfully",
+//       filePath,
+//     });
+//   } catch (error) {
+//     console.error("Excel Error:", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//     });
+//   }
+// };
+
+
+
+
+
 export const downloadIncomeExcel = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // 1. Fetch income data
-    const incomes = await IncomeModel.find({ userId }).sort({
-      date: -1,
-    });
+    const incomes = await IncomeModel.find({ userId }).sort({ date: -1 });
 
     if (!incomes.length) {
       return res.status(404).json({
@@ -122,37 +174,44 @@ export const downloadIncomeExcel = async (req, res) => {
       });
     }
 
-    // 2. Format data
     const excelData = incomes.map((income) => ({
       Source: income.source,
       Amount: income.amount,
-      Date: income.date.toISOString().split("T")[0],
-      CreatedAt: income.createdAt.toISOString().split("T")[0],
+      Date: income.date
+        ? income.date.toISOString().split("T")[0]
+        : "",
+      CreatedAt: income.createdAt
+        ? income.createdAt.toISOString().split("T")[0]
+        : "",
     }));
 
-    // 3. Create workbook
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Income Records");
 
-    // 4. File path (unique per user)
-    const fileName = `income-${userId}-${Date.now()}.xlsx`;
-    const filePath = path.join("exports", fileName);
-
-    // 5. Save file to backend
-    XLSX.writeFile(workbook, filePath);
-
-    // 6. Respond
-    return res.status(200).json({
-      success: true,
-      message: "Excel file generated successfully",
-      filePath,
+    const buffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "buffer",
     });
+
+    // 🔥 Disable caching completely
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=income_records.xlsx"
+    );
+
+    return res.status(200).send(buffer);
+
   } catch (error) {
-    console.error("Excel Error:", error);
+    console.error("Download Income Excel Error:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error while generating Excel file",
     });
   }
 };

@@ -1,5 +1,6 @@
-import ExpenseModel from "../models/Expense.js";
+import ExpenseModel from '../models/Expense.js';
 import path from 'path'
+import XLSX from "xlsx";
 
 
 
@@ -99,52 +100,107 @@ export const deleteExpense = async (req, res) => {
   }
 };
 
+// export const downloadExpenseExcel = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+
+//     const expenses = await ExpenseModel.find({ userId }).sort({
+//       date: -1,
+//     });
+
+//     if (!expenses.length) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "No expense records found",
+//       });
+//     }
+
+//     const excelData = expenses.map((expense) => ({
+//       Category: expense.category,
+//       Amount: expense.amount,
+//       Description: expense.description || "",
+//       Date: expense.date.toISOString().split("T")[0],
+//       CreatedAt: expense.createdAt.toISOString().split("T")[0],
+//     }));
+
+//     const workbook = XLSX.utils.book_new();
+//     const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+//     XLSX.utils.book_append_sheet(
+//       workbook,
+//       worksheet,
+//       "Expense Records"
+//     );
+
+//     const fileName = `expense-${userId}-${Date.now()}.xlsx`;
+//     const filePath = path.join("exports", fileName);
+
+//     XLSX.writeFile(workbook, filePath);
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Expense Excel file generated successfully",
+//       filePath,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//     });
+//   }
+// };
+
+
+
+
+
 export const downloadExpenseExcel = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const expenses = await ExpenseModel.find({ userId }).sort({
-      date: -1,
-    });
+    const expenses = await ExpenseModel.find({ userId }).lean();
 
     if (!expenses.length) {
       return res.status(404).json({
         success: false,
-        message: "No expense records found",
+        message: "No expenses found",
       });
     }
 
-    const excelData = expenses.map((expense) => ({
+    // Format data for Excel
+    const formattedData = expenses.map((expense) => ({
       Category: expense.category,
       Amount: expense.amount,
-      Description: expense.description || "",
-      Date: expense.date.toISOString().split("T")[0],
-      CreatedAt: expense.createdAt.toISOString().split("T")[0],
+      Date: new Date(expense.date).toLocaleDateString(),
     }));
 
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
 
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      "Expense Records"
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
+
+    const buffer = XLSX.write(workbook, {
+      type: "buffer",
+      bookType: "xlsx",
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
 
-    const fileName = `expense-${userId}-${Date.now()}.xlsx`;
-    const filePath = path.join("exports", fileName);
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=expense_details.xlsx"
+    );
 
-    XLSX.writeFile(workbook, filePath);
+    res.send(buffer);
 
-    return res.status(200).json({
-      success: true,
-      message: "Expense Excel file generated successfully",
-      filePath,
-    });
   } catch (error) {
-    return res.status(500).json({
+    console.error("Download Expense Error:", error);
+    res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error while downloading expense",
     });
   }
 };

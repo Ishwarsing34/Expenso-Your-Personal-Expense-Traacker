@@ -128,10 +128,63 @@ const deleteIncome = async (id) => {
 
 
   // Handle Download Income Details
-  const handleDownloadIncomeDetails = async () => {
+// const handleDownloadIncomeDetails = async () => {
+//   try {
+//     const response = await axiosInstance.get(
+//       API_PATHS.INCOME.DOWNLOAD_INCOME
+//     );
 
-  };
+//     if (!response.data?.filePath) {
+//       toast.error("Failed to generate file");
+//       return;
+//     }
 
+//     // Create full URL to backend file
+//     const fileUrl = `http://localhost:3000/${response.data.filePath}`;
+
+//     const link = document.createElement("a");
+//     link.href = fileUrl;
+//     link.setAttribute("download", "income_details.xlsx");
+
+//     document.body.appendChild(link);
+//     link.click();
+//     link.remove();
+
+//     toast.success("Downloaded successfully");
+
+//   } catch (error) {
+//     console.error("Download error:", error);
+//     toast.error("Download failed");
+//   }
+// };
+
+const handleDownloadIncomeDetails = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.INCOME.DOWNLOAD_INCOME + `?t=${Date.now()}`, // 🔥 cache breaker
+      { responseType: "blob" }
+    );
+
+    const url = window.URL.createObjectURL(
+      new Blob([response.data])
+    );
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "income_details.xlsx");
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+
+    toast.success("Downloaded successfully");
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Download failed");
+  }
+};
 
 
 
