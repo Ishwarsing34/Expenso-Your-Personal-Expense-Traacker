@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import CustomBarChart from "../Charts/CustomBarChart";
 import { prepareExpenseBarChartData } from "../../utils/helper";
 
-
 const Last30DaysExpenses = ({ data }) => {
-  const [chartData, setChartData] = useState([]);
 
-  useEffect(() => {
-    if (!data || !data.length) {
-      setChartData([]);
-      return;
-    }
 
-    const result = prepareExpenseBarChartData(data);
-    setChartData(result);
-  }, [data]);
+  console.log("this is data : - " , data );
+  
+  // Safely handle undefined or empty data
+  const chartData = prepareExpenseBarChartData(data || []);
+  
 
+  console.log("this is chartdata :- " , chartData )
   return (
     <div className="card col-span-1 md:col-span-2">
       <div className="flex items-center justify-between">

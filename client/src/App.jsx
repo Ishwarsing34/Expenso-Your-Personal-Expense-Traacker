@@ -11,23 +11,35 @@ import SignUp from "./pages/Auth/SignUp";
 import Home from "./pages/Dashboard/Home";
 import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
+    <div>
+      <Router>
+        <Routes>
 
-        <Route path="/" element={<Root/>} />
+          <Route path="/" element={<Root />} />
 
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
 
-        <Route path="/dashboard" element={<Home />} />
-        <Route path="/income" element={<Income />} />
-        <Route path="/expense" element={<Expense />} />
-      </Routes>
-    </Router>
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/income" element={<Income />} />
+          <Route path="/expense" element={<Expense />} />
+        </Routes>
+      </Router>
+
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: '13px'
+          }
+        }}
+      />
+    </div>
   );
 };
 
@@ -38,7 +50,7 @@ const Root = () => {
 
   const isAuthenticated = !!localStorage.getItem("token");
 
-  
+
   return isAuthenticated ? (
     <Navigate to="/dashboard" replace />
   ) : (

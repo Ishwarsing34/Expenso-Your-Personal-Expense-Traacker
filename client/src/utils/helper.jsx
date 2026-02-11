@@ -1,3 +1,7 @@
+// import moment from "moment"
+
+
+
 export const validateEmail = (email) => {
   const regex =
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -47,4 +51,44 @@ export const prepareExpenseBarChartData = (data = []) => {
   }));
 
   return chartData;
+};
+
+
+
+// export const prepareIncomeBarChartData = (data = []) => {
+//   if (!Array.isArray(data)) return [];
+
+//   const grouped = {};
+
+//   data.forEach((item) => {
+//     const month = new Date(item.date).toLocaleString("default", {
+//       month: "short",
+//     });
+
+//     if (!grouped[month]) {
+//       grouped[month] = 0;
+//     }
+
+//     grouped[month] += item.amount;
+//   });
+
+//   return Object.keys(grouped).map((month) => ({
+//     category: month,
+//     amount: grouped[month],
+//   }));
+// };
+
+
+export const prepareIncomeBarChartData = (data = []) => {
+  if (!Array.isArray(data)) return [];
+
+  return data
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .map((item) => ({
+      category: new Date(item.date).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+      }),
+      amount: item.amount,
+    }));
 };

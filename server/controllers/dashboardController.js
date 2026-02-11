@@ -27,7 +27,7 @@ export const getDashboardData = async (req, res) => {
 
     // ================= LAST 60 DAYS INCOME =================
     const last60DaysIncomeTransactions = await IncomeModel.find({
-      userId,
+      userId :  new mongoose.Types.ObjectId(userId),
       date: { $gte: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000) },
     }).sort({ date: -1 });
 
@@ -38,7 +38,7 @@ export const getDashboardData = async (req, res) => {
 
     // ================= LAST 30 DAYS EXPENSE =================
     const last30DaysExpenseTransactions = await ExpenseModel.find({
-      userId,
+      userId :  new mongoose.Types.ObjectId(userId),
       date: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
     }).sort({ date: -1 });
 
