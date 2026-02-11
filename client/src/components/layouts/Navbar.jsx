@@ -11,11 +11,12 @@ const Navbar = ({ activeMenu }) => {
       <div className="flex items-center gap-4 bg-white border-b border-gray-200 px-4 py-3">
         {/* Hamburger always visible */}
         <button
-          className="text-gray-700 cursor-pointer"
+          className="lg:hidden text-gray-700"
           onClick={() => setOpenSideMenu(true)}
         >
           <HiOutlineMenu size={24} />
         </button>
+
 
         <h2 className="text-lg font-semibold text-gray-800">
           Expense Tracker

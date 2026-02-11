@@ -22,9 +22,9 @@ const SideMenu = ({ activeMenu }) => {
     <aside className="h-full w-full bg-white border-r border-gray-200 px-6 py-8">
       
       {/* Title */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-10">
-        Expense Tracker
-      </h2>
+      {/* <h2 className="text-lg font-semibold text-gray-800 mb-10">
+       
+      </h2> */}
 
       {/* User Section (Centered) */}
       <div className="flex flex-col items-center mb-10">
