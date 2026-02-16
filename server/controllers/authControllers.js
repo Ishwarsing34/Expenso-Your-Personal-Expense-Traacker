@@ -32,7 +32,7 @@ export const registerUser = async (req, res) => {
       name : fullName,
       email,
       password: hashedPassword,
-      profileImageUrl 
+   
     });
 
     // 5. Generate JWT token
@@ -47,7 +47,7 @@ export const registerUser = async (req, res) => {
         id: user._id,
         name: user.fullName,
         email: user.email,
-        profileImageUrl
+  
       },
     });
   } catch (error) {
