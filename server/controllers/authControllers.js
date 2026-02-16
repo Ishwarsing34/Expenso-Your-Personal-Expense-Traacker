@@ -4,9 +4,8 @@ import { hashPassword ,comparePassword} from "../utils/hashedPassword.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, fullName, password  } = req.body;
+    const { email, fullName, password } = req.body;
 
-    // 1. Validate input
     if (!email || !fullName || !password) {
       return res.status(400).json({
         success: false,
@@ -14,7 +13,6 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // 2. Check if user already exists
     const userExists = await userModel.findOne({ email });
 
     if (userExists) {
@@ -24,32 +22,27 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // 3. Hash password
     const hashedPassword = await hashPassword(password);
 
-    // 4. Create user
     const user = await userModel.create({
-      name : fullName,
+      name: fullName,
       email,
       password: hashedPassword,
-   
     });
 
-    // 5. Generate JWT token
     const token = generateToken(user._id);
 
-    // 6. Send response
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
       token,
       user: {
         id: user._id,
-        name: user.fullName,
+        name: user.name,
         email: user.email,
-  
       },
     });
+
   } catch (error) {
     console.error("Register Error:", error);
     return res.status(500).json({
