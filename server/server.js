@@ -16,7 +16,7 @@ import { connectDB } from "./configs/db.js";
 import path from 'path';
 import authRouter from "./routes/authRoutes.js"
 import incomeRouter from './routes/incomeRoutes.js';
-import expenseRouter from './routes/ExpenseRoutes.js';
+import expenseRouter from './routes/expenseRoutes.js';
 import dashRouter from './routes/dashboardRoutes.js';
 
 
