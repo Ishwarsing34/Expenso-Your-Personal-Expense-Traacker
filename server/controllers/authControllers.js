@@ -4,7 +4,7 @@ import { hashPassword ,comparePassword} from "../utils/hashedPassword.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, fullName, password,profileImageUrl  } = req.body;
+    const { email, fullName, password  } = req.body;
 
     // 1. Validate input
     if (!email || !fullName || !password) {
