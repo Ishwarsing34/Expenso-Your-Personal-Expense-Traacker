@@ -1,7 +1,7 @@
 
 
 
-export const BASE_URL = "http://localhost:3000"
+export const BASE_URL = "https://expenso-your-personal-expense-traac.vercel.app"
 
 
 export const API_PATHS = {
