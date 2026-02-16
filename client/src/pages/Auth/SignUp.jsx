@@ -12,7 +12,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 
 const SignUp = () => {
-  const [profilePic, setProfilePic] = useState(null);
+  // const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,20 +46,20 @@ const SignUp = () => {
     // console.log({ fullName, email, password, profilePic });
 
     try {
-      let profileImageUrl;
+      // let profileImageUrl;
 
-      if (profilePic) {
+      // if (profilePic) {
 
-        const imageUploadRes = await uploadImage(profilePic);
-        console.log(imageUploadRes)
-        profileImageUrl = imageUploadRes.imageUrl || "";
-      }
+      //   const imageUploadRes = await uploadImage(profilePic);
+      //   console.log(imageUploadRes)
+      //   profileImageUrl = imageUploadRes.imageUrl || "";
+      // }
 
       const response = axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         fullName,
         email,
         password,
-        profileImageUrl
+      
 
       })
 
@@ -100,12 +100,12 @@ const SignUp = () => {
       <form onSubmit={handleSignUp} className="mt-6 sm:mt-8 space-y-5 sm:space-y-6">
         
         {/* Profile Photo */}
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <ProfilePhotoSelector
             image={profilePic}
             setImage={setProfilePic}
           />
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           <Input
