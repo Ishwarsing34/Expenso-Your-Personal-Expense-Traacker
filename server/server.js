@@ -28,14 +28,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/exports", express.static(path.join(process.cwd(), "exports")));
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders:["Content-Type", "Authorization"]
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL || "http://localhost:5173",
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders:["Content-Type", "Authorization"]
+//   })
+// );
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://expenso-your-personal-expense-track.vercel.app"
+  ],
+  credentials: true
+}));
 
 
 
